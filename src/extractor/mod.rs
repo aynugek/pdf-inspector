@@ -107,7 +107,7 @@ pub fn extract_text_with_positions_pages_with_password<P: AsRef<Path>>(
     Ok(items)
 }
 
-pub(crate) fn extract_text_with_positions_and_rects_with_password<P: AsRef<Path>>(
+pub fn extract_text_with_positions_and_rects_with_password<P: AsRef<Path>>(
     path: P,
     page_filter: Option<&HashSet<u32>>,
     password: Option<&str>,
