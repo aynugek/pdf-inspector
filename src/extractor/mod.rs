@@ -243,6 +243,24 @@ pub(crate) fn extract_text_with_positions_and_rects_with_password<P: AsRef<Path>
     Ok(extraction)
 }
 
+pub fn extract_text_with_positions_and_rects_with_password_mem(
+    buffer: &[u8],
+    page_filter: Option<&HashSet<u32>>,
+    password: Option<&str>,
+) -> Result<PageExtraction, PdfError> {
+    crate::validate_pdf_bytes(buffer)?;
+    let (doc, _) = crate::load_document_from_mem_with_password(&buffer, password)?;
+    let font_cmaps = FontCMaps::from_doc(&doc);
+    let (extraction, _thresholds, _gid_pages, _page_rotations, _cmap_coverage) =
+        extract_positioned_text_from_doc_in_page_box(
+            &doc,
+            &font_cmaps,
+            page_filter,
+            PositionOptions::default(),
+        )?;
+    Ok(extraction)
+}
+
 /// Extract text with positions from a memory buffer. Coordinates: see
 /// [`extract_text_with_positions`].
 pub fn extract_text_with_positions_mem(buffer: &[u8]) -> Result<Vec<TextItem>, PdfError> {
